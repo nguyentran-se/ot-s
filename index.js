@@ -1,5 +1,5 @@
 const app = require('express')();
-
+const cors = require('cors');
 let chrome = {};
 let puppeteer = require('puppeteer-core');
 
@@ -9,8 +9,10 @@ if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
 } else {
   puppeteer = require('puppeteer');
 }
-
-app.get('/api', async (req, res) => {
+app.use(cors({
+  origin: 'https://dha-ot.vercel.app/'
+}));
+app.get('/api/scraping', async (req, res) => {
   let options = {};
   const url = req.query.url;
   console.log('start scraping: ', url);
@@ -38,7 +40,7 @@ app.get('/api', async (req, res) => {
     }
     await browser.close();
     const data = JSON.parse(text);
-    res.status(200).json(data);
+    res.status(200).json(data.props.initialReduxState.pageRestaurantDetail);
   } catch (err) {
     console.error(err);
     return null;
