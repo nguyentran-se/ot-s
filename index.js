@@ -9,9 +9,12 @@ if (process.env.AWS_LAMBDA_FUNCTION_VERSION) {
 } else {
   puppeteer = require('puppeteer');
 }
-app.use(cors({
-  origin: 'https://dha-ot.vercel.app/'
-}));
+// app.use(
+//   cors({
+//     origin: '*',
+//     methods: 'GET',
+//   })
+// );
 app.get('/api/scraping', async (req, res) => {
   let options = {};
   const url = req.query.url;
@@ -40,6 +43,8 @@ app.get('/api/scraping', async (req, res) => {
     }
     await browser.close();
     const data = JSON.parse(text);
+    res.setHeader('Access-Control-Allow-Credentials', true)
+    res.setHeader('Access-Control-Allow-Origin', '*')
     res.status(200).json(data.props.initialReduxState.pageRestaurantDetail);
   } catch (err) {
     console.error(err);
