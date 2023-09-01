@@ -52,8 +52,9 @@ app.get('/api/scraping', async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 3000, () => {
+const server = app.listen(process.env.PORT || 3000, () => {
   console.log('OT-S Server started');
 });
+server.setTimeout(60 * 1000);
 
 module.exports = app;
