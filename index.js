@@ -47,8 +47,8 @@ app.get('/api/scraping', async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.status(200).json(data.props.initialReduxState.pageRestaurantDetail);
   } catch (err) {
-    console.error(err);
-    return null;
+    console.log(err);
+    throw err;
   }
 });
 
